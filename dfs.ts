@@ -7,20 +7,25 @@ export class DFS {
 
 
     algorithm(initialState: number[][]): number[][] {
-        const nextActions = this.problem.actions(initialState);
 
-        let goalState: number[][] = [];
-        nextActions.map(action => {
-            const newState: number[][] = this.problem.place(initialState, action[0], action[1]);
-            const finalState: number[][] = this.algorithm(newState);
+        let states = [initialState];
 
-            if (this.problem.isGoal(finalState)) {
-                goalState = finalState;
-                return;
+        while (states.length > 0) {
+            const currentState: number[][] = states.pop()!;
+
+
+            if (this.problem.isGoal(currentState)) {
+                return currentState;
             }
 
-        })
-        return goalState.length > 0 ? goalState : initialState;
+            const nextActions = this.problem.actions(currentState);
+
+            nextActions.map(action => {
+                const newState = this.problem.place(currentState, action[0], action[1]);
+                states.push(newState);
+            })
+        }
+        return initialState;
     }
 
     solve(problem: Problem) {
