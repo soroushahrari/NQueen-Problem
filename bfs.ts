@@ -11,7 +11,7 @@ export class BFS {
         let states = [initialState];
 
         while (states.length > 0) {
-            const currentState: number[][] = states.pop()!;
+            const currentState: number[][] = states.shift()!;
 
 
             if (this.problem.isGoal(currentState)) {
