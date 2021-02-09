@@ -1,12 +1,15 @@
 import { Problem } from './problem';
+import { print } from './index';
 export class BFS {
     public problem: Problem;
     constructor(problem: Problem) {
         this.problem = problem;
     }
 
+    public counter = 0;
 
-    algorithm(initialState: number[][]) {
+
+    async algorithm(initialState: number[][]): Promise<number[][]> {
 
         let states = [initialState];
 
@@ -14,9 +17,18 @@ export class BFS {
             const currentState: number[][] = states.shift()!;
 
 
+
             if (this.problem.isGoal(currentState)) {
                 return currentState;
             }
+
+            let texts: string[] = [];
+            if (this.counter == 0) {
+                texts.push('Initial State');
+            }
+            print(currentState, '\x1b[37m%s\x1b[0m', texts, this.counter);
+
+            this.counter++;
 
             const nextActions = this.problem.actions(currentState);
 
@@ -28,9 +40,9 @@ export class BFS {
         return initialState;
     }
 
-    solve(problem: Problem) {
+    async solve(problem: Problem): Promise<number[][]> {
         const initialState = problem.initital;
-        return this.algorithm(initialState);
+        return await this.algorithm(initialState);
     }
 
 }
